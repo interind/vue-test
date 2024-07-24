@@ -1,18 +1,21 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <TextTag :info="arrayText"/>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import TextTag from './components/TextTag.vue';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
-  }
+    TextTag
+  },
+  data: () => ({
+    arrayText: [{text: 'info', icon: 'mdi-home-small'}, {text: 'info'}],
+  }),
 }
 </script>
 

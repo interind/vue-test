@@ -1,11 +1,11 @@
 <template>
-  <div class="row">
-    <div v-for="({text, icon}, index) of info" :key="text + index">
-      <v-chip>
+  <div class="tag">
+    <div class="tag__cell" v-for="({text, icon}, index) of info" :key="text + index">
+      <v-chip class="tag__chip" variant="text">
         <v-icon v-if="icon">{{ icon }}</v-icon>
         {{ text }}
       </v-chip>
-      <v-icon v-if="index < info?.length - 1">mdi-circle-small</v-icon>
+      <v-icon class="tag__icon" v-if="index < info?.length - 1">mdi-circle-small</v-icon>
     </div>
   </div>
 </template>
@@ -17,12 +17,27 @@ export default {
   props: {
     info: {type: [], require: false}},
   data: () => ({}),
+  methods: {
+    separators:  (info) => info?.slice(0, info?.length - 1) || []
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-  .row {
-    display: flex;
-    justify-content: space-around;
+  .tag {
+    display: inline-flex;
+    flex-wrap: wrap;
+    width: 100%;
+    &__chip {
+      background: transparent !important;
+    }
+    &__cell {
+      display: flex;
+      justify-content: space-between;
+      flex: 1;
+    }
+    &__icon {
+      margin: 0 auto;
+    }
   }
 </style>

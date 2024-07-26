@@ -2,7 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
     <div class="content" v-for="item in [100, 80, 60, 40]" :key="item" :style="`width: ${item}%`">
-      <TextTag :info="arrayText"/>
+      <text-tag :info="arrayText" :align="'end'"></text-tag>
     </div>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   data: () => ({
     arrayText: data,
   }),
-}
+};
 </script>
 
 <style lang="scss" scoped>

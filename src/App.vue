@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <div class="content" v-for="item in [100, 80, 60, 40]" :key="item" :style="`width: ${item}%`">
-      <text-tag :info="arrayText" :align="'end'"></text-tag>
+    <div class="content" v-for="(item, index) of [100, 80, 60, 40]" :key="item" :style="`width: ${item}%`">
+      <text-tag :info="arrayText" :align="index % 2 ? 'start' : 'end'"></text-tag>
     </div>
   </div>
 </template>

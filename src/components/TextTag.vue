@@ -1,11 +1,11 @@
 <template>
-  <v-row :class="['tag', positionClass(align)]" v-resize="onResize" :style="{maxWidth: `${maxWidth}px`}">
-    <div :class="['tag__cell']" v-for="({text, icon}, index) of list" :key="text + index">
+  <v-row :class="['tag', positionClass(align)]" v-resize="onResize">
+    <div class="tag__cell" v-for="({text, icon}, index) of renderList" :key="text + index">
+      <v-icon class="tag__icon" v-show="index">mdi-circle-small</v-icon>
       <v-chip class="tag__chip" variant="text">
         <v-icon v-if="icon">{{ icon }}</v-icon>
         {{ text }}
       </v-chip>
-      <v-icon class="tag__icon" v-show="index <= lastIndex">mdi-circle-small</v-icon>
     </div>
   </v-row>
 </template>
@@ -23,52 +23,34 @@ export default {
     return {
       width: 0,
       height: 0,
-      list: this.info,
-      lastIndex: this.info?.length,
-      maxWidth: 0,
+      currentList: [],
+      lastIndex: this.info?.length - 1,
     };
   },
   mounted() {
     this.width = this.$el.offsetWidth;
     this.height = this.$el.offsetHeight;
-    let lastIndex = 0;
-    let width = 0;
-
-    Array.from(this.$el.children).forEach((element, index) => {
-      width += element.getBoundingClientRect().width;
-      console.log(width, index);
-      if (width <= this.width) {
-        console.log("p");
-        lastIndex = index;
-      }
-    });
-      this.lastIndex = lastIndex;
-      this.maxWidth = width;
+    this.currentList = this.info;
   },
   methods: {
     onResize() {
       // this.width = width;
       // this.height = height;
-      let listWidth = this.$el?.getBoundingClientRect().width;
-
-      if (this.maxWidth < listWidth) return;
-
+      this.lastIndex = this.info?.length;
       let lastIndex = this.lastIndex;
       let width = 0;
+      const listWidth = this.$el?.getBoundingClientRect().width;
+
+      console.log(listWidth, this.$el.children);
 
       Array.from(this.$el.children).forEach((element, index) => {
         width += element.getBoundingClientRect().width;
-        console.log(width, index);
         if (width <= listWidth) {
-          console.log("p");
           lastIndex = index;
         }
       });
-      this.lastIndex = lastIndex;
-      this.maxWidth = width;
-      console.log(lastIndex);
-      console.log(this.$el?.getBoundingClientRect());
-      console.dir(this.$el);
+      console.log(width);
+      this.lastIndex = lastIndex + 1;
     },
     positionClass(align) {
       switch(align) {
@@ -81,17 +63,19 @@ export default {
     },
   },
   computed: {
-
-  },
+    renderList() {
+      return this.info.slice(0, this.lastIndex);
+    }
+  }
 };
 </script>
 
 <style lang="scss" scoped>
   .tag {
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    white-space: nowrap;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    outline: 1px solid red;
     &.end {
       justify-content: flex-end;
     }
@@ -102,16 +86,10 @@ export default {
     &__cell {
       display: inline-flex;
       justify-content: space-between;
-      opacity: 1;
-      visibility: visible;;
-      &.opacity {
-        opacity: 0;
-        visibility: hidden;
-      }
     }
     &__icon {
-      margin: 0 auto;
       flex: 1;
+      margin: 0 auto;
     }
   }
 </style>
